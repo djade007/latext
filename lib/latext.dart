@@ -51,8 +51,8 @@ class LaTexTState extends State<LaTexT> {
     for (final laTeXMatch in matches) {
       // If there is an offset between the lat match (beginning of the [String] in first case), first adding the found [Text]
       if (laTeXMatch.start > lastTextEnd) {
-        textBlocks.add(TextSpan(
-            text: laTeXCode.substring(lastTextEnd, laTeXMatch.start).trim()));
+        textBlocks.add(
+            TextSpan(text: laTeXCode.substring(lastTextEnd, laTeXMatch.start)));
       }
       // Adding the [CaTeX] widget to the children
       if (laTeXMatch.group(3) != null) {
@@ -78,7 +78,7 @@ class LaTexTState extends State<LaTexT> {
 
     // If there is any text left after the end of the last match, adding it to children
     if (lastTextEnd < laTeXCode.length) {
-      textBlocks.add(TextSpan(text: laTeXCode.substring(lastTextEnd).trim()));
+      textBlocks.add(TextSpan(text: laTeXCode.substring(lastTextEnd)));
     }
 
     // Returning a RichText containing all the [TextSpan] and [WidgetSpan] created previously while
