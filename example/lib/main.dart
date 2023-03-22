@@ -50,33 +50,31 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: const Text('LaTexT Flutter Home Page'),
         ),
-        body: Padding(
+        body: SingleChildScrollView(
           padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    decoration: const InputDecoration(
-                        labelText: 'Your LaTeX code here',
-                        helperText:
-                            'Use \$ as delimiter. Use \$\$ for display LaTeX.'),
-                    controller: _laTeXInputController,
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                      labelText: 'Your LaTeX code here',
+                      helperText:
+                          'Use \$ as delimiter. Use \$\$ for display LaTeX.'),
+                  controller: _laTeXInputController,
+                ),
+              ),
+              Builder(
+                builder: (context) => LaTexT(
+                  laTeXCode: Text(
+                    _laTeX,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
-                Builder(
-                  builder: (context) => LaTexT(
-                    laTeXCode: Text(
-                      _laTeX,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(

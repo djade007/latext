@@ -52,23 +52,33 @@ class LaTexTState extends State<LaTexT> {
       // If there is an offset between the lat match (beginning of the [String] in first case), first adding the found [Text]
       if (laTeXMatch.start > lastTextEnd) {
         textBlocks.add(
-            TextSpan(text: laTeXCode.substring(lastTextEnd, laTeXMatch.start)));
+          TextSpan(
+            text: laTeXCode.substring(lastTextEnd, laTeXMatch.start),
+          ),
+        );
       }
       // Adding the [CaTeX] widget to the children
       if (laTeXMatch.group(3) != null) {
-        textBlocks.add(WidgetSpan(
+        textBlocks.add(
+          WidgetSpan(
             alignment: PlaceholderAlignment.middle,
-            child: Math.tex(laTeXMatch.group(3)?.trim() ?? '')));
+            child: Math.tex(
+              laTeXMatch.group(3)?.trim() ?? '',
+              textStyle: defaultTextStyle,
+            ),
+          ),
+        );
       } else {
         textBlocks.addAll([
           const TextSpan(text: '\n'),
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
             child: DefaultTextStyle.merge(
-                child: Math.tex(laTeXMatch.group(6)?.trim() ?? '')),
-            /*style: Theme.of(context).textTheme.headline4.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: Theme.of(context).textTheme.bodyText1.fontSize * 2)*/
+              child: Math.tex(
+                laTeXMatch.group(6)?.trim() ?? '',
+                textStyle: defaultTextStyle,
+              ),
+            ),
           ),
           const TextSpan(text: '\n')
         ]);
