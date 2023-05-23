@@ -1,3 +1,6 @@
+## 0.1.0
+* Update flutter_math_fork to 0.7.1
+
 ## 0.0.3
 * Fix LaTeX style
 
