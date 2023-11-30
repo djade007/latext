@@ -1,6 +1,6 @@
 name: latext
 description: Efficiently display scientific LaTeX equations on Android, iOS, Web, and Desktop platforms using the flutter_math library, without relying on WebView or JavaScript.
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/djade007/latext
 
 environment:
