@@ -32,9 +32,9 @@ class _MyHomePageState extends State<MyHomePage> {
       text: r'What do you think about $L'
           '\''
           r' = {L}{\sqrt{1-\frac{v^2}{c^2}}}$ ?'
-          '\n'
+          r'\\'
           r'And some display $\LaTeX$: $$\boxed{\rm{A function: } f(x) = \frac{5}{3} \cdot x}$$'
-          '\n'
+          r'\\'
           r'$\KaTeX$-Flutter provides easy processing of $LaTeX$ embedded into any text.');
   late String _laTeX;
 

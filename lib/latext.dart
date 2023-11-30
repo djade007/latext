@@ -13,11 +13,15 @@ class LaTexT extends StatefulWidget {
   // The delimiter to be used for Display (centered, "important") LaTeX
   final String displayDelimiter;
 
+  // The delimiter to be used for line breaks. Either \\ or \break.
+  final String breakDelimiter;
+
   const LaTexT({
     super.key,
     required this.laTeXCode,
     this.delimiter = r'$',
     this.displayDelimiter = r'$$',
+    this.breakDelimiter = r'\\',
   });
 
   @override
@@ -51,38 +55,24 @@ class LaTexTState extends State<LaTexT> {
     for (final laTeXMatch in matches) {
       // If there is an offset between the lat match (beginning of the [String] in first case), first adding the found [Text]
       if (laTeXMatch.start > lastTextEnd) {
-        textBlocks.add(
-          TextSpan(
-            text: laTeXCode.substring(lastTextEnd, laTeXMatch.start),
+        textBlocks.addAll(
+          _extractTextSpans(
+            laTeXCode.substring(lastTextEnd, laTeXMatch.start),
           ),
         );
       }
       // Adding the [CaTeX] widget to the children
       if (laTeXMatch.group(3) != null) {
-        textBlocks.add(
-          WidgetSpan(
-            alignment: PlaceholderAlignment.middle,
-            child: Math.tex(
-              laTeXMatch.group(3)?.trim() ?? '',
-              textStyle: defaultTextStyle,
-            ),
+        textBlocks.addAll(
+          _extractWidgetSpans(
+            laTeXMatch.group(3)?.trim() ?? '',
+            false,
           ),
         );
       } else {
         textBlocks.addAll([
           const TextSpan(text: '\n'),
-          WidgetSpan(
-            alignment: PlaceholderAlignment.middle,
-            child: Align(
-              alignment: Alignment.center,
-              child: DefaultTextStyle.merge(
-                child: Math.tex(
-                  laTeXMatch.group(6)?.trim() ?? '',
-                  textStyle: defaultTextStyle,
-                ),
-              ),
-            ),
-          ),
+          ..._extractWidgetSpans(laTeXMatch.group(6)?.trim() ?? '', true),
           const TextSpan(text: '\n')
         ]);
       }
@@ -91,7 +81,11 @@ class LaTexTState extends State<LaTexT> {
 
     // If there is any text left after the end of the last match, adding it to children
     if (lastTextEnd < laTeXCode.length) {
-      textBlocks.add(TextSpan(text: laTeXCode.substring(lastTextEnd)));
+      textBlocks.addAll(
+        _extractTextSpans(
+          laTeXCode.substring(lastTextEnd),
+        ),
+      );
     }
 
     // Returning a RichText containing all the [TextSpan] and [WidgetSpan] created previously while
@@ -111,5 +105,60 @@ class LaTexTState extends State<LaTexT> {
       maxLines: widget.laTeXCode.maxLines,
       semanticsLabel: widget.laTeXCode.semanticsLabel,
     );
+  }
+
+  List<TextSpan> _extractTextSpans(String text) {
+    final texts = text.split(widget.breakDelimiter);
+    final List<TextSpan> textSpans = [];
+    for (int i = 0; i < texts.length; i++) {
+      if (i != 0) {
+        textSpans.add(
+          const TextSpan(
+            text: '\n',
+          ),
+        );
+      }
+      textSpans.add(
+        TextSpan(
+          text: texts[i].trim(),
+        ),
+      );
+    }
+    return textSpans;
+  }
+
+  List<InlineSpan> _extractWidgetSpans(String text, bool align) {
+    final texts = text.split(widget.breakDelimiter);
+    final List<InlineSpan> widgetSpans = [];
+    for (int i = 0; i < texts.length; i++) {
+      if (i != 0) {
+        widgetSpans.add(
+          const TextSpan(
+            text: '\n',
+          ),
+        );
+      }
+
+      Widget tex = Math.tex(
+        texts[i].trim(),
+        textStyle: widget.laTeXCode.style,
+      );
+
+      if (align) {
+        tex = Align(
+          alignment: Alignment.center,
+          child: tex,
+        );
+      }
+
+      widgetSpans.add(
+        WidgetSpan(
+          alignment: PlaceholderAlignment.middle,
+          child: tex,
+        ),
+      );
+    }
+
+    return widgetSpans;
   }
 }
