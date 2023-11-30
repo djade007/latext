@@ -73,10 +73,13 @@ class LaTexTState extends State<LaTexT> {
           const TextSpan(text: '\n'),
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
-            child: DefaultTextStyle.merge(
-              child: Math.tex(
-                laTeXMatch.group(6)?.trim() ?? '',
-                textStyle: defaultTextStyle,
+            child: Align(
+              alignment: Alignment.center,
+              child: DefaultTextStyle.merge(
+                child: Math.tex(
+                  laTeXMatch.group(6)?.trim() ?? '',
+                  textStyle: defaultTextStyle,
+                ),
               ),
             ),
           ),
@@ -105,7 +108,6 @@ class LaTexTState extends State<LaTexT> {
       locale: widget.laTeXCode.locale,
       softWrap: widget.laTeXCode.softWrap,
       overflow: widget.laTeXCode.overflow,
-      textScaleFactor: widget.laTeXCode.textScaleFactor,
       maxLines: widget.laTeXCode.maxLines,
       semanticsLabel: widget.laTeXCode.semanticsLabel,
     );
