@@ -144,11 +144,14 @@ class LaTexTState extends State<LaTexT> {
         );
       }
 
-      Widget tex = Math.tex(
-        texts[i].trim(),
-        textStyle: (widget.equationStyle != null)
-            ? widget.equationStyle
-            : widget.laTeXCode.style,
+      Widget tex = SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Math.tex(
+          texts[i].trim(),
+          textStyle: (widget.equationStyle != null)
+              ? widget.equationStyle
+              : widget.laTeXCode.style,
+        ),
       );
 
       if (align) {
