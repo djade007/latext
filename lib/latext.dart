@@ -16,9 +16,14 @@ class LaTexT extends StatefulWidget {
   // The delimiter to be used for line breaks. Either \\ or \break.
   final String breakDelimiter;
 
+  // A TextStyle used to apply styles exclusively to the mathematical equations of the laTeXCode.
+  // If not provided, this variable will be ignored, and the laTeXCode style will be applied.
+  final TextStyle? equationStyle;
+
   const LaTexT({
     super.key,
     required this.laTeXCode,
+    this.equationStyle,
     this.delimiter = r'$',
     this.displayDelimiter = r'$$',
     this.breakDelimiter = r'\\',
@@ -139,9 +144,12 @@ class LaTexTState extends State<LaTexT> {
         );
       }
 
-      Widget tex = Math.tex(
-        texts[i].trim(),
-        textStyle: widget.laTeXCode.style,
+      Widget tex = SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Math.tex(
+          texts[i].trim(),
+          textStyle: widget.equationStyle ?? widget.laTeXCode.style,
+        ),
       );
 
       if (align) {
