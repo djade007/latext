@@ -148,9 +148,7 @@ class LaTexTState extends State<LaTexT> {
         scrollDirection: Axis.horizontal,
         child: Math.tex(
           texts[i].trim(),
-          textStyle: (widget.equationStyle != null)
-              ? widget.equationStyle
-              : widget.laTeXCode.style,
+          textStyle: widget.equationStyle ?? widget.laTeXCode.style,
         ),
       );
 
