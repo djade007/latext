@@ -27,7 +27,7 @@ Add this to your package's pubspec.yaml file:
 
 ```yaml
 dependencies:
-  latext: ^0.2.0
+  latext: ^0.3.0
 ```
 You can install packages from the command line with Flutter:
 
