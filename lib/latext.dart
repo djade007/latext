@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 
 class LaTexT extends StatefulWidget {
-  // a Text used for the rendered code as well as for the style
+  /// a Text used for the rendered code as well as for the style
   final Text laTeXCode;
 
-  // The delimiter to be used for inline LaTeX
+  /// The delimiter to be used for inline LaTeX
   final String delimiter;
 
-  // The delimiter to be used for Display (centered, "important") LaTeX
+  /// The delimiter to be used for Display (centered, "important") LaTeX
   final String displayDelimiter;
 
-  // The delimiter to be used for line breaks. Either \\ or \break.
+  /// The delimiter to be used for line breaks. Either \\ or \break.
   final String breakDelimiter;
 
-  // A TextStyle used to apply styles exclusively to the mathematical equations of the laTeXCode.
-  // If not provided, this variable will be ignored, and the laTeXCode style will be applied.
+  /// A TextStyle used to apply styles exclusively to the mathematical equations of the laTeXCode.
+  /// If not provided, this variable will be ignored, and the laTeXCode style will be applied.
   final TextStyle? equationStyle;
 
   const LaTexT({
@@ -57,14 +57,31 @@ class LaTexTState extends State<LaTexT> {
     final List<InlineSpan> textBlocks = [];
     int lastTextEnd = 0;
 
+    String? prevText1;
     for (final laTeXMatch in matches) {
       // If there is an offset between the lat match (beginning of the [String] in first case), first adding the found [Text]
       if (laTeXMatch.start > lastTextEnd) {
+        final texts = laTeXCode.substring(lastTextEnd, laTeXMatch.start);
+        if (prevText1 != null && prevText1.endsWith(' ')) {
+          textBlocks.add(
+            const TextSpan(
+              text: ' ',
+            ),
+          );
+        }
         textBlocks.addAll(
           _extractTextSpans(
-            laTeXCode.substring(lastTextEnd, laTeXMatch.start),
+            texts,
           ),
         );
+        if (texts.endsWith(' ')) {
+          textBlocks.add(
+            const TextSpan(
+              text: ' ',
+            ),
+          );
+        }
+        prevText1 = texts;
       }
       // Adding the [CaTeX] widget to the children
       if (laTeXMatch.group(3) != null) {
@@ -123,11 +140,22 @@ class LaTexTState extends State<LaTexT> {
           ),
         );
       }
-      textSpans.add(
-        TextSpan(
-          text: texts[i].trim(),
-        ),
-      );
+
+      final subTexts = texts[i].split('\\ ');
+      for (int j = 0; j < subTexts.length; j++) {
+        if (j != 0) {
+          textSpans.add(
+            const TextSpan(
+              text: ' ',
+            ),
+          );
+        }
+        textSpans.add(
+          TextSpan(
+            text: subTexts[j].trim(),
+          ),
+        );
+      }
     }
     return textSpans;
   }
@@ -144,27 +172,39 @@ class LaTexTState extends State<LaTexT> {
         );
       }
 
-      Widget tex = SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Math.tex(
-          texts[i].trim(),
-          textStyle: widget.equationStyle ?? widget.laTeXCode.style,
-        ),
-      );
+      final subTexts = texts[i].split('\\ ');
 
-      if (align) {
-        tex = Align(
-          alignment: Alignment.center,
-          child: tex,
+      for (int j = 0; j < subTexts.length; j++) {
+        if (j != 0) {
+          widgetSpans.add(
+            const TextSpan(
+              text: ' ',
+            ),
+          );
+        }
+
+        Widget tex = SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Math.tex(
+            subTexts[j].trim(),
+            textStyle: widget.equationStyle ?? widget.laTeXCode.style,
+          ),
+        );
+
+        if (align) {
+          tex = Align(
+            alignment: Alignment.center,
+            child: tex,
+          );
+        }
+
+        widgetSpans.add(
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: tex,
+          ),
         );
       }
-
-      widgetSpans.add(
-        WidgetSpan(
-          alignment: PlaceholderAlignment.middle,
-          child: tex,
-        ),
-      );
     }
 
     return widgetSpans;
