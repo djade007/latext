@@ -13,7 +13,9 @@ class LaTexT extends StatefulWidget {
   /// The delimiter to be used for Display (centered, "important") LaTeX
   final String displayDelimiter;
 
-  /// The delimiter to be used for line breaks. Either \\ or \break.
+  /// The delimiter to be used for line breaks outside of $delimiters$
+  /// Default is '\n'
+  /// example: Two latex equations separated by a line break: $equation1$ \n $equation2$
   final String breakDelimiter;
 
   /// A TextStyle used to apply styles exclusively to the mathematical equations of the laTeXCode.
@@ -26,7 +28,7 @@ class LaTexT extends StatefulWidget {
     this.equationStyle,
     this.delimiter = r'$',
     this.displayDelimiter = r'$$',
-    this.breakDelimiter = r'\\',
+    this.breakDelimiter = r'\n',
   });
 
   @override
@@ -141,7 +143,7 @@ class LaTexTState extends State<LaTexT> {
         );
       }
 
-      final subTexts = texts[i].split('\\ ');
+      final subTexts = texts[i].split('${widget.breakDelimiter} ');
       for (int j = 0; j < subTexts.length; j++) {
         if (j != 0) {
           textSpans.add(
@@ -172,7 +174,7 @@ class LaTexTState extends State<LaTexT> {
         );
       }
 
-      final subTexts = texts[i].split('\\ ');
+      final subTexts = texts[i].split('${widget.breakDelimiter} ');
 
       for (int j = 0; j < subTexts.length; j++) {
         if (j != 0) {

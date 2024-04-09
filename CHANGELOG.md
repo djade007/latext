@@ -1,3 +1,8 @@
+### 0.4.0
+
+* Breaking change: Break delimiter outside of $equation$ is now \n instead of \\ to prevent issues with breaks in math
+  equations like in https://github.com/djade007/latext/issues/18.
+
 ### 0.3.0
 
 * Fix space between latex and text
