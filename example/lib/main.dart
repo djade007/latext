@@ -29,13 +29,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _laTeXInputController = TextEditingController(
-      text: r'What do you think about $L'
-          '\''
-          r' = {L}{\sqrt{1-\frac{v^2}{c^2}}}$ ?'
-          r'\\'
-          r'And some display $\LaTeX$: $$\boxed{\rm{A function: } f(x) = \frac{5}{3} \cdot x}$$'
-          r'\\'
-          r'$\KaTeX$-Flutter provides easy processing of $LaTeX$ embedded into any text.');
+    text: r'What do you think about $L'
+        '\''
+        r' = {L}{\sqrt{1-\frac{v^2}{c^2}}}$ ?'
+        r'\n'
+        r'And some display $\LaTeX$: $$\boxed{\rm{A function: } f(x) = \frac{5}{3} \cdot x}$$'
+        r'\n'
+        r'$\KaTeX$-Flutter provides easy processing of $LaTeX$ embedded into any text.'
+        r'\n'
+        r'$$\left\{\begin{array}{l}3 x-4 y=1 \\ -3 x+7 y=5\end{array}\right.$$',
+  );
   late String _laTeX;
 
   @override
