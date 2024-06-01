@@ -22,10 +22,14 @@ class LaTexT extends StatefulWidget {
   /// If not provided, this variable will be ignored, and the laTeXCode style will be applied.
   final TextStyle? equationStyle;
 
+  /// A callback function to be called when an error occurs while rendering the LaTeX code.
+  final Function(String text)? onErrorFallback;
+
   const LaTexT({
     super.key,
     required this.laTeXCode,
     this.equationStyle,
+    this.onErrorFallback,
     this.delimiter = r'$',
     this.displayDelimiter = r'$$',
     this.breakDelimiter = r'\n',
@@ -190,6 +194,9 @@ class LaTexTState extends State<LaTexT> {
           child: Math.tex(
             subTexts[j].trim(),
             textStyle: widget.equationStyle ?? widget.laTeXCode.style,
+            onErrorFallback: (exception) =>
+                widget.onErrorFallback?.call(subTexts[j].trim()) ??
+                Math.defaultOnErrorFallback(exception),
           ),
         );
 
