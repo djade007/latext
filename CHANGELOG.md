@@ -1,3 +1,5 @@
+### 0.4.1
+* Add onErrorFallback
 ### 0.4.0
 
 * Breaking change: Break delimiter outside of $equation$ is now \n instead of \\ to prevent issues with breaks in math
