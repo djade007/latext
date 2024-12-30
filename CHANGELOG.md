@@ -1,3 +1,6 @@
+### 0.5.0
+* Add support for flutter 3.27.0
+
 ### 0.4.1
 * Add onErrorFallback
 ### 0.4.0
